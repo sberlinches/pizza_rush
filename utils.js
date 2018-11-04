@@ -8,9 +8,9 @@
  */
 function getIngredientByColor(ingredients, color) {
 
-    for(let i = 0; i < ingredients.length; i++)
-        if(ingredients[i].color === color)
-            return ingredients[i].uid;
+    for (let key in ingredients)
+        if(ingredients[key].color === color)
+            return ingredients[key].uid;
 }
 
 /**
