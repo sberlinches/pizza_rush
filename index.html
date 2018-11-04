@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizza Rush</title>
+    <script src="script.js"></script>
+    <style type="text/css">
+        canvas {
+            border:1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="1024" height="768"></canvas>
+
+    <script type="text/javascript">
+
+        class Pizza {
+
+            constructor(radius) {
+                this.x = 200;
+                this.y = 200;
+                this.radius = 50;
+                this.rotation = 0;
+                this.rotationSpeed = 0.001;
+                this.ingredients = [];
+            }
+
+            addIngredient(ingredient) {
+                this.ingredients.push(ingredient);
+            }
+
+            render(ctx) {
+
+                ctx.save();
+
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+
+                circle(ctx,0,0,this.radius,FULL_CIRCLE,null,'black',4);
+
+                for(let i = 0; i < this.ingredients.length; i++)
+                    this.ingredients[i].render(ctx);
+
+                ctx.restore();
+
+                this.rotation += this.rotationSpeed;
+            }
+        }
+
+        class Test {
+
+            constructor() {}
+
+            render(ctx) {
+                triangle(ctx,0,0,100,100,null,'black',4);
+            }
+        }
+
+
+
+
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        let pizza = new Pizza();
+        let test = new Test();
+
+        pizza.addIngredient(test);
+
+
+
+        startGame();
+
+        function startGame() {
+           // updateGame();
+            drawGame();
+        }
+
+        /*function updateGame() {
+            // GAME AND ANIMATION LOGIC GOES HERE
+            //pizza.move();
+            // CHANGE THE NUMBER OF MILLISECONDS TO ADJUST FRAME RATE
+            setTimeout(updateGame, 100);
+        }*/
+
+        function drawGame() {
+
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            pizza.render(ctx);
+
+            requestAnimationFrame(drawGame);
+        }
+    </script>
+</body>
+</html>
