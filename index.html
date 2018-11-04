@@ -5,6 +5,10 @@
     <title>Pizza Rush</title>
     <script src="script.js"></script>
     <style type="text/css">
+        body {
+            background-color: gray;
+            margin: 10px;
+        }
         canvas {
             border:1px solid black;
         }
@@ -17,10 +21,12 @@
 
         class Pizza {
 
-            constructor(radius) {
+            constructor() {
+                this.name = 'Pizza dough';
+                this.color = 'fcf5bf';
                 this.x = 200;
                 this.y = 200;
-                this.radius = 50;
+                this.radius = 100;
                 this.rotation = 0;
                 this.rotationSpeed = 0.001;
                 this.ingredients = [];
@@ -37,7 +43,7 @@
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.rotation);
 
-                circle(ctx,0,0,this.radius,FULL_CIRCLE,null,'black',4);
+                circle(ctx,0,0,this.radius,FULL_CIRCLE,'#'+this.color);
 
                 for(let i = 0; i < this.ingredients.length; i++)
                     this.ingredients[i].render(ctx);
@@ -48,12 +54,15 @@
             }
         }
 
-        class Test {
+        class TomatoSauce {
 
-            constructor() {}
+            constructor() {
+                this.name = 'Tomato sauce';
+                this.color = 'ff2b2b';
+            }
 
             render(ctx) {
-                triangle(ctx,0,0,100,100,null,'black',4);
+                triangle(ctx,0,0,100,100,'#'+this.color);
             }
         }
 
@@ -63,9 +72,11 @@
         let canvas = document.getElementById("canvas");
         let ctx = canvas.getContext("2d");
         let pizza = new Pizza();
-        let test = new Test();
+        let tomatoSauce = new TomatoSauce();
 
-        pizza.addIngredient(test);
+        let ingredients = [pizza,tomatoSauce];
+
+        //pizza.addIngredient(test);
 
 
 
@@ -89,8 +100,77 @@
 
             pizza.render(ctx);
 
+            tomatoSauce.render(ctx);
+
             requestAnimationFrame(drawGame);
         }
+
+
+
+        let action = {
+          origin: '',
+          destination: ''
+        };
+
+        canvas.addEventListener("mousedown", function(e){
+
+            const mouse = {
+                x: e.clientX - canvas.offsetTop,
+                y: e.clientY - canvas.offsetLeft
+            };
+
+            const pixel = ctx.getImageData(mouse.x, mouse.y, 1, 1).data;
+            let pixelColor = fullColorHex(pixel[0],pixel[1],pixel[2]);
+
+            for(let i = 0; i < ingredients.length; i++) {
+                if(ingredients[i].color === pixelColor) {
+                    console.log(ingredients[i].name);
+                    action.origin = ingredients[i].name;
+                }
+            }
+        });
+
+        canvas.addEventListener("mouseup", function(e){
+
+            const mouse = {
+                x: e.clientX - canvas.offsetTop,
+                y: e.clientY - canvas.offsetLeft
+            };
+
+            const pixel = ctx.getImageData(mouse.x, mouse.y, 1, 1).data;
+            let pixelColor = fullColorHex(pixel[0],pixel[1],pixel[2]);
+
+            for(let i = 0; i < ingredients.length; i++) {
+                if(ingredients[i].color === pixelColor) {
+                    console.log(ingredients[i].name);
+                    action.destination = ingredients[i].name;
+                }
+            }
+
+            console.log(action);
+            if(action.destination === 'Pizza dough') {
+                if(action.origin === 'Tomato sauce')
+                    pizza.addIngredient(tomatoSauce);
+            }
+        });
+
+
+
+        var fullColorHex = function(r,g,b) {
+            var red = rgbToHex(r);
+            var green = rgbToHex(g);
+            var blue = rgbToHex(b);
+            return red+green+blue;
+        };
+
+
+        var rgbToHex = function (rgb) {
+            var hex = Number(rgb).toString(16);
+            if (hex.length < 2) {
+                hex = "0" + hex;
+            }
+            return hex;
+        };
     </script>
 </body>
 </html>
