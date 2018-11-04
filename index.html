@@ -79,59 +79,78 @@
             }
         }
 
-        let canvas      = document.getElementById("canvas");
-        let ctx         = canvas.getContext("2d");
-        let action      = {origin: null, destination: null};
-        let pizza       = new Pizza();
-        let base        = new Base();
-        let tomatoSauce = new TomatoSauce();
-        let ingredients = [base,tomatoSauce];
+        let canvas, ctx, pizza, ingredients = {};
 
         startGame();
 
         function startGame() {
-
-            pizza.addIngredient(base);
+            initGame();
             drawGame();
+        }
+
+        function initGame() {
+
+            canvas  = document.getElementById("canvas");
+            ctx     = canvas.getContext("2d");
+
+            // Add all the ingredients to be used to the ingredients' list
+            ingredients.base        = new Base();
+            ingredients.tomatoSauce = new TomatoSauce();
+
+            // Initializes the pizza
+            pizza = new Pizza();
+            pizza.addIngredient(ingredients.base);
+
+            // Initializes the drag and drop events
+            initDragAndDrop();
         }
 
         function drawGame() {
 
             ctx.clearRect(0,0,canvas.width,canvas.height);
-
             pizza.render(ctx);
-
             //Static elements
-            tomatoSauce.render(ctx);
-
+            ingredients.tomatoSauce.render(ctx);
             requestAnimationFrame(drawGame);
         }
 
-        // Simulates the drag event
-        canvas.addEventListener("mousedown", function(event) {
-            // Gets the dragged ingredient
-            action.origin = getIngredientByColor(ingredients, getPixelColor(event, canvas));
-        });
+        /**
+         * Initializes the drag and drop events.
+         * Drags the ingredient to the pizza and add it.
+         */
+        function initDragAndDrop() {
 
-        // Simulates the drop event
-        canvas.addEventListener("mouseup", function(event) {
-            // Gets the ingredient where dragged ingredient is dropped
-            action.destination = getIngredientByColor(ingredients, getPixelColor(event, canvas));
+            let action = {
+                origin: null,
+                destination: null
+            };
 
-            // Only if the destination is the base, the dragged ingredient is added.
-            if(action.destination === BASE_UID) {
+            // Simulates the drag event
+            canvas.addEventListener("mousedown", function(event) {
+                // Gets the dragged ingredient
+                action.origin = getIngredientByColor(ingredients, getPixelColor(event, canvas));
+            });
 
-                switch (action.origin) {
-                    case TOMATO_UID:
-                        pizza.addIngredient(tomatoSauce);
-                        break;
+            // Simulates the drop event
+            canvas.addEventListener("mouseup", function(event) {
+                // Gets the ingredient where dragged ingredient is dropped
+                action.destination = getIngredientByColor(ingredients, getPixelColor(event, canvas));
+
+                // Only if the destination is the base, the dragged ingredient is added.
+                if(action.destination === BASE_UID) {
+
+                    switch (action.origin) {
+                        case TOMATO_UID:
+                            pizza.addIngredient(ingredients.tomatoSauce);
+                            break;
+                    }
+
+                    // Resets the action object
+                    action.origin = null;
+                    action.destination = null;
                 }
-
-                // Resets the action object
-                action.origin = null;
-                action.destination = null;
-            }
-        });
+            });
+        }
     </script>
 </body>
 </html>
