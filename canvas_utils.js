@@ -18,13 +18,6 @@ const HALF_RIGHT_CIRCLE     = 4;
  */
 function rectangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth) {
 
-    /*let coordinates = [
-        [x, y],
-        [x+width, y],
-        [x+width, y+height],
-        [x, y+height]
-    ];*/
-
     let coordinates = [
         [0, 0],
         [width, 0],
@@ -46,12 +39,6 @@ function rectangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth
  * @param strokeWidth
  */
 function triangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth) {
-
-    /*let coordinates = [
-        [x+width/2, y],
-        [x+width, y+height],
-        [x, y+height]
-    ];*/
 
     let coordinates = [
         [width/2, 0],
@@ -184,7 +171,6 @@ function getMaxWidthHeight(cs) {
             max.height = cs[c][1];
     }
 
-
     return max;
 }
 
@@ -196,11 +182,6 @@ function getMaxWidthHeight(cs) {
  */
 function render(ctx, fillColor, strokeColor, strokeWidth) {
 
-
-    //ctx.save();
-    //ctx.translate(this.x, this.y);
-   // ctx.rotate(1);
-
     if(fillColor) {
         ctx.fillStyle = fillColor;
         ctx.fill();
@@ -211,12 +192,4 @@ function render(ctx, fillColor, strokeColor, strokeWidth) {
         ctx.lineWidth = strokeWidth;
         ctx.stroke();
     }
-
-
-    // Add rotation here
-
-
-    //context.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-    //ctx.restore(); //Restore the original context before transform
-
 }
