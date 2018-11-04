@@ -3,154 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Pizza Rush</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="utils.js"></script>
     <script src="script.js"></script>
-    <style type="text/css">
-        body {
-            background-color: gray;
-            margin: 10px;
-        }
-        canvas {
-            border:1px solid black;
-        }
-    </style>
+    <script src="ingredients.js"></script>
+    <script src="game.js"></script>
 </head>
 <body>
     <canvas id="canvas" width="1024" height="768"></canvas>
 
     <script type="text/javascript">
-
-        const BASE_UID = 1;
-        const TOMATO_UID = 2;
-
-        class Pizza {
-
-            constructor() {
-                this.x = 200;
-                this.y = 200;
-                this.rotation = 0;
-                this.rotationSpeed = 0.001;
-                this.ingredients = [];
-            }
-
-            addIngredient(ingredient) {
-                this.ingredients.push(ingredient);
-            }
-
-            render(ctx) {
-
-                ctx.save();
-
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-
-                for(let i = 0; i < this.ingredients.length; i++)
-                    this.ingredients[i].render(ctx);
-
-                ctx.restore();
-
-                this.rotation += this.rotationSpeed;
-            }
-        }
-
-        class Base {
-
-            constructor() {
-                this.uid = BASE_UID;
-                this.name = 'Pizza base';
-                this.color = 'fcf5bf';
-            }
-
-            render(ctx) {
-                circle(ctx,0,0,100,FULL_CIRCLE,'#'+this.color);
-            }
-        }
-
-        class TomatoSauce {
-
-            constructor() {
-                this.uid = TOMATO_UID;
-                this.name = 'Tomato sauce';
-                this.color = 'ff2b2b';
-            }
-
-            render(ctx) {
-                triangle(ctx,0,0,100,100,'#'+this.color);
-            }
-        }
-
-        let canvas, ctx, pizza, ingredients = {};
-
         startGame();
-
-        function startGame() {
-            initGame();
-            drawGame();
-        }
-
-        function initGame() {
-
-            canvas  = document.getElementById("canvas");
-            ctx     = canvas.getContext("2d");
-
-            // Add all the ingredients to be used to the ingredients' list
-            ingredients.base        = new Base();
-            ingredients.tomatoSauce = new TomatoSauce();
-
-            // Initializes the pizza
-            pizza = new Pizza();
-            pizza.addIngredient(ingredients.base);
-
-            // Initializes the drag and drop events
-            initDragAndDrop();
-        }
-
-        function drawGame() {
-
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            pizza.render(ctx);
-            //Static elements
-            ingredients.tomatoSauce.render(ctx);
-            requestAnimationFrame(drawGame);
-        }
-
-        /**
-         * Initializes the drag and drop events.
-         * Drags the ingredient to the pizza and add it.
-         */
-        function initDragAndDrop() {
-
-            let action = {
-                origin: null,
-                destination: null
-            };
-
-            // Simulates the drag event
-            canvas.addEventListener("mousedown", function(event) {
-                // Gets the dragged ingredient
-                action.origin = getIngredientByColor(ingredients, getPixelColor(event, canvas));
-            });
-
-            // Simulates the drop event
-            canvas.addEventListener("mouseup", function(event) {
-                // Gets the ingredient where dragged ingredient is dropped
-                action.destination = getIngredientByColor(ingredients, getPixelColor(event, canvas));
-
-                // Only if the destination is the base, the dragged ingredient is added.
-                if(action.destination === BASE_UID) {
-
-                    switch (action.origin) {
-                        case TOMATO_UID:
-                            pizza.addIngredient(ingredients.tomatoSauce);
-                            break;
-                    }
-
-                    // Resets the action object
-                    action.origin = null;
-                    action.destination = null;
-                }
-            });
-        }
     </script>
 </body>
 </html>
