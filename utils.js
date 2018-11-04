@@ -1,6 +1,34 @@
 "use strict";
 
 /**
+ * Compares the color of each ingredient in the list with the provided
+ * color. If there's a match the ingredient is returned.
+ * @param ingredients The list of ingredients
+ * @param color The color to look for
+ */
+function getIngredientByColor(ingredients, color) {
+
+    for(let i = 0; i < ingredients.length; i++)
+        if(ingredients[i].color === color)
+            return ingredients[i].uid;
+}
+
+/**
+ * Gets and returns the color of the pixel under the mouse cursor.
+ * @param event The mouse event
+ * @param canvas The canvas object
+ * @returns {string} The color in hexadecimal
+ */
+function getPixelColor(event, canvas) {
+
+    let x = event.clientX - canvas.offsetTop;
+    let y = event.clientY - canvas.offsetLeft;
+    let p = ctx.getImageData(x, y, 1, 1).data;
+
+    return rgbToHex(p[0],p[1],p[2]);
+}
+
+/**
  * Converts rgb values into an hexadecimal string.
  * @param r Red
  * @param g Green

@@ -20,14 +20,14 @@
 
     <script type="text/javascript">
 
+        const BASE_UID = 1;
+        const TOMATO_UID = 2;
+
         class Pizza {
 
             constructor() {
-                this.name = 'Pizza dough';
-                this.color = 'fcf5bf';
                 this.x = 200;
                 this.y = 200;
-                this.radius = 100;
                 this.rotation = 0;
                 this.rotationSpeed = 0.001;
                 this.ingredients = [];
@@ -44,8 +44,6 @@
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.rotation);
 
-                circle(ctx,0,0,this.radius,FULL_CIRCLE,'#'+this.color);
-
                 for(let i = 0; i < this.ingredients.length; i++)
                     this.ingredients[i].render(ctx);
 
@@ -55,9 +53,23 @@
             }
         }
 
+        class Base {
+
+            constructor() {
+                this.uid = BASE_UID;
+                this.name = 'Pizza base';
+                this.color = 'fcf5bf';
+            }
+
+            render(ctx) {
+                circle(ctx,0,0,100,FULL_CIRCLE,'#'+this.color);
+            }
+        }
+
         class TomatoSauce {
 
             constructor() {
+                this.uid = TOMATO_UID;
                 this.name = 'Tomato sauce';
                 this.color = 'ff2b2b';
             }
@@ -67,33 +79,21 @@
             }
         }
 
-
-
-
-        let canvas = document.getElementById("canvas");
-        let ctx = canvas.getContext("2d");
-        let pizza = new Pizza();
+        let canvas      = document.getElementById("canvas");
+        let ctx         = canvas.getContext("2d");
+        let action      = {origin: null, destination: null};
+        let pizza       = new Pizza();
+        let base        = new Base();
         let tomatoSauce = new TomatoSauce();
-
-        let ingredients = [pizza,tomatoSauce];
-
-        //pizza.addIngredient(test);
-
-
+        let ingredients = [base,tomatoSauce];
 
         startGame();
 
         function startGame() {
-           // updateGame();
+
+            pizza.addIngredient(base);
             drawGame();
         }
-
-        /*function updateGame() {
-            // GAME AND ANIMATION LOGIC GOES HERE
-            //pizza.move();
-            // CHANGE THE NUMBER OF MILLISECONDS TO ADJUST FRAME RATE
-            setTimeout(updateGame, 100);
-        }*/
 
         function drawGame() {
 
@@ -101,64 +101,37 @@
 
             pizza.render(ctx);
 
+            //Static elements
             tomatoSauce.render(ctx);
 
             requestAnimationFrame(drawGame);
         }
 
-
-
-        let action = {
-          origin: '',
-          destination: ''
-        };
-
-        canvas.addEventListener("mousedown", function(e){
-
-            const mouse = {
-                x: e.clientX - canvas.offsetTop,
-                y: e.clientY - canvas.offsetLeft
-            };
-
-            const pixel = ctx.getImageData(mouse.x, mouse.y, 1, 1).data;
-            let pixelColor = rgbToHex(pixel[0],pixel[1],pixel[2]);
-
-            for(let i = 0; i < ingredients.length; i++) {
-                if(ingredients[i].color === pixelColor) {
-                    console.log(ingredients[i].name);
-                    action.origin = ingredients[i].name;
-                }
-            }
+        // Simulates the drag event
+        canvas.addEventListener("mousedown", function(event) {
+            // Gets the dragged ingredient
+            action.origin = getIngredientByColor(ingredients, getPixelColor(event, canvas));
         });
 
-        canvas.addEventListener("mouseup", function(e){
+        // Simulates the drop event
+        canvas.addEventListener("mouseup", function(event) {
+            // Gets the ingredient where dragged ingredient is dropped
+            action.destination = getIngredientByColor(ingredients, getPixelColor(event, canvas));
 
-            const mouse = {
-                x: e.clientX - canvas.offsetTop,
-                y: e.clientY - canvas.offsetLeft
-            };
+            // Only if the destination is the base, the dragged ingredient is added.
+            if(action.destination === BASE_UID) {
 
-            const pixel = ctx.getImageData(mouse.x, mouse.y, 1, 1).data;
-            let pixelColor = rgbToHex(pixel[0],pixel[1],pixel[2]);
-
-            for(let i = 0; i < ingredients.length; i++) {
-                if(ingredients[i].color === pixelColor) {
-                    console.log(ingredients[i].name);
-                    action.destination = ingredients[i].name;
+                switch (action.origin) {
+                    case TOMATO_UID:
+                        pizza.addIngredient(tomatoSauce);
+                        break;
                 }
-            }
 
-            console.log(action);
-            if(action.destination === 'Pizza dough') {
-                if(action.origin === 'Tomato sauce')
-                    pizza.addIngredient(tomatoSauce);
+                // Resets the action object
+                action.origin = null;
+                action.destination = null;
             }
         });
-
-
-
-
-
     </script>
 </body>
 </html>
