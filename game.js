@@ -22,11 +22,14 @@ function initGame() {
     ctx     = canvas.getContext("2d");
 
     // Add all the ingredients to be used to the ingredients' list
-    ingredients.base        = new Base();
-    ingredients.tomatoSauce = new TomatoSauce();
+    ingredients.base        = new Base(150, 300, 40);
+    ingredients.tomatoSauce = new TomatoSauce(50, 300, 40);
 
     // Initializes the pizza
-    pizza = new Pizza();
+    let r = 100;
+    let x = (canvas.width-(r/2))/2;
+    let y = (canvas.height-(r/2))/2;
+    pizza = new Pizza(x, y, r);
 
     // Initializes the drag and drop events
     initDragAndDrop();
@@ -37,10 +40,13 @@ function initGame() {
  */
 function renderGame() {
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     pizza.render(ctx);
-    //Static elements
-    ingredients.tomatoSauce.render(ctx);
+
+    // Draw each ingredient of the list
+    for (let key in ingredients)
+        ingredients[key].render(ctx);
+
     requestAnimationFrame(renderGame);
 }
 
@@ -71,15 +77,22 @@ function initDragAndDrop() {
             let pointer = getPointerCoordinates(event, canvas);
 
             // If the destination is the pizza, the dragged ingredient is added.
-            if (circleCollision(pizza, pointer))
+            if (circleCollision(pizza, pointer)) {
+
+                // Due the translation in the render method in the pizza object,
+                // the dropped ingredients' coordinates have to be recalculated.
+                let x = pointer.x - pizza.x;
+                let y = pointer.y - pizza.y;
+
                 switch (action.origin) {
                     case BASE_UID:
-                        pizza.addIngredient(ingredients.base);
+                        pizza.addIngredient(new Base(x, y, 90));
                         break;
                     case TOMATO_SAUCE_UID:
-                        pizza.addIngredient(ingredients.tomatoSauce);
+                        pizza.addIngredient(new TomatoSauce(x, y, 20));
                         break;
                 }
+            }
 
             console.log(pizza.ingredients);
 

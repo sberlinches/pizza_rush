@@ -9,13 +9,13 @@ const TOMATO_SAUCE_UID  = 2;
  */
 class Pizza {
 
-    constructor() {
+    constructor(x, y, radius) {
         this.uid = PIZZA_UID;
         this.name = 'Pizza tray';
         this.color = 'e5e5e5';
-        this.x = 200;
-        this.y = 200;
-        this.radius = 100;
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
         this.rotation = 0;
         this.rotationSpeed = 0.001;
         this.ingredients = [];
@@ -31,10 +31,10 @@ class Pizza {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation);
 
-        // Draw the pizza tray
+        // Render the pizza tray
         circle(ctx, 0, 0, this.radius, FULL_CIRCLE, '#'+this.color);
 
-        // Draw each ingredient of the list
+        // Render each ingredient of the list
         for(let i = 0; i < this.ingredients.length; i++)
             this.ingredients[i].render(ctx);
 
@@ -50,14 +50,17 @@ class Pizza {
  */
 class Base {
 
-    constructor() {
+    constructor(x, y, radius) {
         this.uid = BASE_UID;
         this.name = 'Pizza base';
         this.color = 'fcf5bf';
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
     }
 
     render(ctx) {
-        circle(ctx,0,0,100,FULL_CIRCLE,'#'+this.color);
+        circle(ctx, this.x, this.y, this.radius, FULL_CIRCLE, '#'+this.color);
     }
 }
 
@@ -66,13 +69,16 @@ class Base {
  */
 class TomatoSauce {
 
-    constructor() {
+    constructor(x, y, radius) {
         this.uid = TOMATO_SAUCE_UID;
         this.name = 'Tomato sauce';
         this.color = 'ff2b2b';
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
     }
 
     render(ctx) {
-        triangle(ctx,0,0,100,100,'#'+this.color);
+        circle(ctx, this.x, this.y, this.radius, FULL_CIRCLE, '#'+this.color);
     }
 }
