@@ -1,6 +1,21 @@
 "use strict";
 
 /**
+ * Calculates and returns whether the two circles intersect or not.
+ * @param circleA
+ * @param circleB
+ * @returns {boolean} Whether the two circles intersect or not
+ */
+function circleCollision(circleA, circleB) {
+
+    let r = circleA.radius + circleB.radius;
+    let x = circleA.x - circleB.x;
+    let y = circleA.y - circleB.y;
+
+    return (r > Math.sqrt((x * x) + (y * y)));
+}
+
+/**
  * Compares the color of each ingredient in the list with the provided
  * color. If there's a match the ingredient is returned.
  * @param ingredients The list of ingredients
@@ -21,11 +36,10 @@ function getIngredientByColor(ingredients, color) {
  */
 function getPixelColor(event, canvas) {
 
-    let x = event.clientX - canvas.offsetTop;
-    let y = event.clientY - canvas.offsetLeft;
-    let p = ctx.getImageData(x, y, 1, 1).data;
+    let pointer = getPointerCoordinates(event, canvas);
+    let color = ctx.getImageData(pointer.x, pointer.y, 1, 1).data;
 
-    return rgbToHex(p[0],p[1],p[2]);
+    return rgbToHex(color[0],color[1],color[2]);
 }
 
 /**
@@ -54,4 +68,19 @@ function decToHex(d) {
         hex = '0' + hex;
 
     return hex;
+}
+
+/**
+ * Calculates and returns the pointer position inside the canvas.
+ * @param event
+ * @param canvas
+ * @returns {{x: number, y: number, radius: number}}
+ */
+function getPointerCoordinates(event, canvas) {
+
+    return {
+        x: event.clientX - canvas.offsetTop,
+        y: event.clientY - canvas.offsetLeft,
+        radius: 0
+    };
 }

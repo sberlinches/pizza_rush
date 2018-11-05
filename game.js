@@ -27,7 +27,6 @@ function initGame() {
 
     // Initializes the pizza
     pizza = new Pizza();
-    pizza.addIngredient(ingredients.base);
 
     // Initializes the drag and drop events
     initDragAndDrop();
@@ -67,22 +66,25 @@ function initDragAndDrop() {
     // Simulates the drop event
     canvas.addEventListener("mouseup", function(event) {
 
-        // Gets the ingredient where dragged ingredient is dropped
-        if(action.origin)
-            action.destination = getIngredientByColor(ingredients, getPixelColor(event, canvas));
+        if (action.origin) {
 
-        // If the destination is the pizza, the dragged ingredient is added.
-        if (action.destination === BASE_UID)
-            switch (action.origin) {
-                case BASE_UID:
-                    pizza.addIngredient(ingredients.base);
-                    break;
-                case TOMATO_SAUCE_UID:
-                    pizza.addIngredient(ingredients.tomatoSauce);
-                    break;
-            }
+            let pointer = getPointerCoordinates(event, canvas);
 
-        // Resets the action
-        action = initAction();
+            // If the destination is the pizza, the dragged ingredient is added.
+            if (circleCollision(pizza, pointer))
+                switch (action.origin) {
+                    case BASE_UID:
+                        pizza.addIngredient(ingredients.base);
+                        break;
+                    case TOMATO_SAUCE_UID:
+                        pizza.addIngredient(ingredients.tomatoSauce);
+                        break;
+                }
+
+            console.log(pizza.ingredients);
+
+            // Resets the action
+            action = initAction();
+        }
     });
 }
