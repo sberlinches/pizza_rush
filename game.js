@@ -3,7 +3,9 @@
 let canvas,
     ctx,
     pizza,
-    ingredients = {};
+    ingredients = {},
+    draggedIngredient = null,
+    showDraggedIngredient = false;
 
 /**
  * Starts the game.
@@ -48,6 +50,10 @@ function renderGame() {
     for (let key in ingredients)
         ingredients[key].render(ctx);
 
+    // Render the ingredient when is being dragged
+    if(showDraggedIngredient)
+        draggedIngredient.render(ctx);
+
     requestAnimationFrame(renderGame);
 }
 
@@ -61,6 +67,13 @@ function initDragAndDrop() {
         return { origin: null, destination: null }
     }
 
+    // The dragged ingredient follows the cursor
+    function dragIngredientAnimation() {
+        let pointer = getPointerCoordinates(event, canvas);
+        draggedIngredient.x = pointer.x;
+        draggedIngredient.y = pointer.y;
+    }
+
     let action = initAction();
 
     // Simulates the drag event
@@ -68,7 +81,19 @@ function initDragAndDrop() {
 
         // Gets the dragged ingredient
         action.origin = getIngredientByColor(ingredients, getPixelColor(event, canvas));
+
+        if(action.origin) {
+
+            let pointer = getPointerCoordinates(event, canvas);
+
+            // Creates a shadow ingredient to animate the drag action
+            showDraggedIngredient = true;
+            draggedIngredient = createIngredientByUid(action.origin, pointer.x, pointer.y);
+            draggedIngredient.globalAlpha = 0.7;
+            canvas.addEventListener("mousemove", dragIngredientAnimation);
+        }
     });
+
 
     // Simulates the drop event
     canvas.addEventListener("mouseup", function(event) {
@@ -76,6 +101,11 @@ function initDragAndDrop() {
         if (action.origin) {
 
             let pointer = getPointerCoordinates(event, canvas);
+
+            // Once the ingredient has been dropped is the animation is removed
+            showDraggedIngredient = false;
+            draggedIngredient = null;
+            canvas.removeEventListener("mousemove", dragIngredientAnimation);
 
             // If the destination is the pizza, the dragged ingredient is added.
             if (circleCollision(pizza, pointer)) {
@@ -85,20 +115,10 @@ function initDragAndDrop() {
                 let x = pointer.x - pizza.x;
                 let y = pointer.y - pizza.y;
 
-                switch (action.origin) {
-                    case BASE_UID:
-                        pizza.addIngredient(new Base(x, y, 90));
-                        break;
-                    case TOMATO_SAUCE_UID:
-                        pizza.addIngredient(new TomatoSauce(x, y, 80));
-                        break;
-                    case OLIVE_UID:
-                        pizza.addIngredient(new Olive(x, y, 10));
-                        break;
-                }
+                pizza.addIngredient(createIngredientByUid(action.origin, x, y));
             }
 
-            console.log(pizza.ingredients);
+            console.log(pizza.ingredients); //TODO: remove
 
             // Resets the action
             action = initAction();

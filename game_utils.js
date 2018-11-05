@@ -84,3 +84,22 @@ function getPointerCoordinates(event, canvas) {
         radius: 0
     };
 }
+
+/**
+ * Creates and returns the ingredient that matches the uid.
+ * @param uid
+ * @param x
+ * @param y
+ * @returns {*}
+ */
+function createIngredientByUid(uid, x, y) {
+
+    switch (uid) {
+        case BASE_UID:
+            return new Base(x, y, 90);
+        case TOMATO_SAUCE_UID:
+            return new TomatoSauce(x, y, 80);
+        case OLIVE_UID:
+            return new Olive(x, y, 10);
+    }
+}
