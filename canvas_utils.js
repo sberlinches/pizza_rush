@@ -15,8 +15,9 @@ const HALF_RIGHT_CIRCLE     = 4;
  * @param fillColor
  * @param strokeColor
  * @param strokeWidth
+ * @param globalAlpha
  */
-function rectangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth) {
+function rectangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth, globalAlpha = null) {
 
     let coordinates = [
         [0, 0],
@@ -25,7 +26,7 @@ function rectangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth
         [0, height]
     ];
 
-    freeForm(ctx, x, y, coordinates, fillColor, strokeColor, strokeWidth, true);
+    freeForm(ctx, x, y, coordinates, fillColor, strokeColor, strokeWidth, globalAlpha, true);
 }
 
 /**
@@ -37,8 +38,9 @@ function rectangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth
  * @param fillColor
  * @param strokeColor
  * @param strokeWidth
+ * @param globalAlpha
  */
-function triangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth) {
+function triangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth, globalAlpha = null) {
 
     let coordinates = [
         [width/2, 0],
@@ -46,7 +48,7 @@ function triangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth)
         [0, height]
     ];
 
-    freeForm(ctx, x, y, coordinates, fillColor, strokeColor, strokeWidth, true);
+    freeForm(ctx, x, y, coordinates, fillColor, strokeColor, strokeWidth, globalAlpha, true);
 }
 
 /**
@@ -59,8 +61,9 @@ function triangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth)
  * @param fillColor
  * @param strokeColor
  * @param strokeWidth
+ * @param globalAlpha
  */
-function circle(ctx, x, y, radius, type, fillColor, strokeColor, strokeWidth) {
+function circle(ctx, x, y, radius, type, fillColor, strokeColor, strokeWidth, globalAlpha = null) {
 
     let sAngle  = 0;
     let eAngle  = 0;
@@ -90,7 +93,7 @@ function circle(ctx, x, y, radius, type, fillColor, strokeColor, strokeWidth) {
 
     ctx.beginPath();
     ctx.arc(x, y, radius, sAngle, eAngle);
-    render(ctx, fillColor, strokeColor, strokeWidth);
+    render(ctx, fillColor, strokeColor, strokeWidth, globalAlpha);
 }
 
 /**
@@ -117,11 +120,14 @@ function text(ctx, x, y, text, font, size, fillColor) {
  * @param fillColor
  * @param strokeColor
  * @param strokeWidth
+ * @param globalAlpha
  * @param autoClose
  */
-function freeForm(ctx, x, y, cs, fillColor, strokeColor, strokeWidth, autoClose = false) {
+function freeForm(ctx, x, y, cs, fillColor, strokeColor, strokeWidth, globalAlpha = null, autoClose = false) {
 
     ctx.save();
+
+    ctx.globalAlpha = 0.5;
 
     let max = getMaxWidthHeight(cs);
     ctx.translate((-max.width/2)+x, (-max.height/2)+y);
@@ -149,10 +155,9 @@ function freeForm(ctx, x, y, cs, fillColor, strokeColor, strokeWidth, autoClose 
         }
 
     if (autoClose) ctx.closePath();
-
     ctx.restore();
 
-    render(ctx, fillColor, strokeColor, strokeWidth);
+    render(ctx, fillColor, strokeColor, strokeWidth, globalAlpha);
 }
 
 /**
@@ -179,8 +184,14 @@ function getMaxWidthHeight(cs) {
  * @param fillColor
  * @param strokeColor
  * @param strokeWidth
+ * @param globalAlpha
  */
-function render(ctx, fillColor, strokeColor, strokeWidth) {
+function render(ctx, fillColor, strokeColor, strokeWidth, globalAlpha) {
+
+    if(globalAlpha !== null) {
+        ctx.save();
+        ctx.globalAlpha = globalAlpha;
+    }
 
     if(fillColor) {
         ctx.fillStyle = fillColor;
@@ -192,4 +203,7 @@ function render(ctx, fillColor, strokeColor, strokeWidth) {
         ctx.lineWidth = strokeWidth;
         ctx.stroke();
     }
+
+    if(globalAlpha !== null)
+        ctx.restore();
 }

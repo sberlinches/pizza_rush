@@ -3,7 +3,7 @@
 const PIZZA_UID         = 0;
 const BASE_UID          = 1;
 const TOMATO_SAUCE_UID  = 2;
-const OLIVE_UID        = 3;
+const OLIVE_UID         = 3;
 
 /**
  * Pizza class.
@@ -17,8 +17,13 @@ class Pizza {
         this.x = x;
         this.y = y;
         this.radius = radius;
+        this.type = FULL_CIRCLE;
+        this.fillColor = '#' + this.color;
+        this.strokeColor = null;
+        this.strokeWidth = null;
+        this.globalAlpha = null;
         this.rotation = 0;
-        this.rotationSpeed = 0.001;
+        this.rotationSpeed = 0.005;
         this.ingredients = [];
     }
 
@@ -33,7 +38,7 @@ class Pizza {
         ctx.rotate(this.rotation);
 
         // Render the pizza tray
-        circle(ctx, 0, 0, this.radius, FULL_CIRCLE, '#'+this.color);
+        circle(ctx, 0, 0, this.radius, this.type, this.fillColor, this.strokeColor, this.strokeWidth, this.globalAlpha);
 
         // Render each ingredient of the list
         for(let i = 0; i < this.ingredients.length; i++)
@@ -58,10 +63,15 @@ class Base {
         this.x = x;
         this.y = y;
         this.radius = radius;
+        this.type = FULL_CIRCLE;
+        this.fillColor = '#' + this.color;
+        this.strokeColor = null;
+        this.strokeWidth = null;
+        this.globalAlpha = null;
     }
 
     render(ctx) {
-        circle(ctx, this.x, this.y, this.radius, FULL_CIRCLE, '#'+this.color);
+        circle(ctx, this.x, this.y, this.radius, this.type, this.fillColor, this.strokeColor, this.strokeWidth, this.globalAlpha);
     }
 }
 
@@ -77,10 +87,15 @@ class TomatoSauce {
         this.x = x;
         this.y = y;
         this.radius = radius;
+        this.type = FULL_CIRCLE;
+        this.fillColor = '#' + this.color;
+        this.strokeColor = null;
+        this.strokeWidth = null;
+        this.globalAlpha = null;
     }
 
     render(ctx) {
-        circle(ctx, this.x, this.y, this.radius, FULL_CIRCLE, '#'+this.color);
+        circle(ctx, this.x, this.y, this.radius, this.type, this.fillColor, this.strokeColor, this.strokeWidth, this.globalAlpha);
     }
 }
 
@@ -96,9 +111,14 @@ class Olive {
         this.x = x;
         this.y = y;
         this.radius = radius;
+        this.type = FULL_CIRCLE;
+        this.fillColor = null;
+        this.strokeColor = '#' + this.color;
+        this.strokeWidth = (this.radius*70)/100;
+        this.globalAlpha = null;
     }
 
     render(ctx) {
-        circle(ctx, this.x, this.y, this.radius, FULL_CIRCLE, null, '#'+this.color, (this.radius*70)/100);
+        circle(ctx, this.x, this.y, this.radius, this.type, this.fillColor, this.strokeColor, this.strokeWidth, this.globalAlpha);
     }
 }
