@@ -51,34 +51,38 @@ function renderGame() {
  */
 function initDragAndDrop() {
 
-    let action = {
-        origin: null,
-        destination: null
-    };
+    function initAction() {
+        return { origin: null, destination: null }
+    }
+
+    let action = initAction();
 
     // Simulates the drag event
     canvas.addEventListener("mousedown", function(event) {
+
         // Gets the dragged ingredient
         action.origin = getIngredientByColor(ingredients, getPixelColor(event, canvas));
     });
 
     // Simulates the drop event
     canvas.addEventListener("mouseup", function(event) {
+
         // Gets the ingredient where dragged ingredient is dropped
-        action.destination = getIngredientByColor(ingredients, getPixelColor(event, canvas));
+        if(action.origin)
+            action.destination = getIngredientByColor(ingredients, getPixelColor(event, canvas));
 
-        // Only if the destination is the base, the dragged ingredient is added.
-        if(action.destination === BASE_UID) {
-
+        // If the destination is the pizza, the dragged ingredient is added.
+        if (action.destination === BASE_UID)
             switch (action.origin) {
-                case TOMATO_UID:
+                case BASE_UID:
+                    pizza.addIngredient(ingredients.base);
+                    break;
+                case TOMATO_SAUCE_UID:
                     pizza.addIngredient(ingredients.tomatoSauce);
                     break;
             }
 
-            // Resets the action object
-            action.origin = null;
-            action.destination = null;
-        }
+        // Resets the action
+        action = initAction();
     });
 }
