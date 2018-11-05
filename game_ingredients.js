@@ -3,6 +3,7 @@
 const PIZZA_UID         = 0;
 const BASE_UID          = 1;
 const TOMATO_SAUCE_UID  = 2;
+const OLIVE_UID        = 3;
 
 /**
  * Pizza class.
@@ -80,5 +81,24 @@ class TomatoSauce {
 
     render(ctx) {
         circle(ctx, this.x, this.y, this.radius, FULL_CIRCLE, '#'+this.color);
+    }
+}
+
+/**
+ * Olive class.
+ */
+class Olive {
+
+    constructor(x, y, radius) {
+        this.uid = OLIVE_UID;
+        this.name = 'Olive';
+        this.color = '332929';
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+    }
+
+    render(ctx) {
+        circle(ctx, this.x, this.y, this.radius, FULL_CIRCLE, null, '#'+this.color, (this.radius*70)/100);
     }
 }

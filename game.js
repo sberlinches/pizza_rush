@@ -22,8 +22,9 @@ function initGame() {
     ctx     = canvas.getContext("2d");
 
     // Add all the ingredients to be used to the ingredients' list
-    ingredients.base        = new Base(150, 300, 40);
-    ingredients.tomatoSauce = new TomatoSauce(50, 300, 40);
+    ingredients.base        = new Base(40, canvas.height-40, 40);
+    ingredients.tomatoSauce = new TomatoSauce(120, canvas.height-40, 40);
+    ingredients.olive       = new Olive(200, canvas.height-40, 30);
 
     // Initializes the pizza
     let r = 100;
@@ -89,7 +90,10 @@ function initDragAndDrop() {
                         pizza.addIngredient(new Base(x, y, 90));
                         break;
                     case TOMATO_SAUCE_UID:
-                        pizza.addIngredient(new TomatoSauce(x, y, 20));
+                        pizza.addIngredient(new TomatoSauce(x, y, 80));
+                        break;
+                    case OLIVE_UID:
+                        pizza.addIngredient(new Olive(x, y, 10));
                         break;
                 }
             }
