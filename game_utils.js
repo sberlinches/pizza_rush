@@ -23,9 +23,9 @@ function circleCollision(circleA, circleB) {
  */
 function getIngredientByColor(ingredients, color) {
 
-    for (let key in ingredients)
-        if(ingredients[key].color === color)
-            return ingredients[key].uid;
+    for(let i = 0; i < ingredients.length; i++)
+        if(ingredients[i].color === color)
+            return ingredients[i].uid;
 }
 
 /**
@@ -104,4 +104,14 @@ function createIngredientByUid(uid, x, y) {
         case OLIVE_UID:
             return new Olive(x, y, 10);
     }
+}
+
+/**
+ * Returns a random number between the given numbers
+ * @param num1
+ * @param num2
+ * @returns {number}
+ */
+function getRandomNumber(num1, num2) {
+    return Math.floor((Math.random() * num2) + num1);
 }

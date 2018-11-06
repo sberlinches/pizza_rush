@@ -19,8 +19,8 @@ class Pizza {
         this.radius = radius;
         this.type = FULL_CIRCLE;
         this.fillColor = '#' + this.color;
-        this.strokeColor = null;
-        this.strokeWidth = null;
+        this.strokeColor = '#d6d6d6';
+        this.strokeWidth = 6;
         this.globalAlpha = null;
         this.rotation = 0;
         this.rotationSpeed = 0.005;
@@ -29,6 +29,10 @@ class Pizza {
 
     addIngredient(ingredient) {
         this.ingredients.push(ingredient);
+    }
+
+    reset() {
+        this.ingredients = [];
     }
 
     render(ctx) {

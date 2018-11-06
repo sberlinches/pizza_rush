@@ -1,11 +1,106 @@
 "use strict";
 
+class Level {
+
+    constructor(ingredients, pizza) {
+        this.level = 1;
+        this.isOrderValid = true;
+        this.ingredients = ingredients;
+        this.pizza = pizza;
+        this.order = [];
+
+        this.createOrder();
+    }
+
+    /**
+     * Repeats the actual level
+     */
+    repeatLevel() {
+
+        this.isRecipeOk = true;
+        this.renderOrder();
+    }
+
+    /**
+     * Initializes the next level
+     */
+    nextLevel() {
+
+        this.level++;
+        this.isRecipeOk = true;
+        this.createOrder();
+        this.renderOrder();
+    }
+
+    /**
+     * Creates a order based on the ingredient list
+     */
+    createOrder() {
+
+        this.order = [];
+
+        // Fills the order with random ingredients from the list
+        for(let i = 0; i < this.level + 1; i++)
+            this.order.push(this.ingredients[getRandomNumber(0, this.ingredients.length)]);
+    }
+
+    /**
+     *
+     * @param ingredientUid
+     */
+    checkOrder(ingredientUid) {
+
+        if(this.order[0].uid === ingredientUid)
+            this.order.shift();
+        else
+            this.isOrderValid = false;
+
+        if(this.order.length === 0) {
+            if(this.isOrderValid) {
+                console.log('You made it!');
+                this.pizza.reset();
+                level.nextLevel();
+            }
+            else {
+                console.log('The recipe has been messed up! Try it again');
+                this.pizza.reset();
+                this.repeatLevel();
+            }
+        }
+    }
+
+    /**
+     * Renders the order on screen
+     */
+    renderOrder() {
+
+        let order = document.getElementById('order');
+        order.innerHTML = '';
+        let title = document.createElement('h2');
+        let list = document.createElement('ol');
+
+        for (let i = 0; i < this.order.length; i++) {
+
+            let li = document.createElement('li');
+            let text = document.createTextNode(this.order[i].name);
+
+            li.appendChild(text);
+            list.appendChild(li);
+        }
+
+        title.appendChild(document.createTextNode('Level ' + this.level));
+        order.appendChild(title);
+        order.append(list);
+    }
+}
+
 let canvas,
     ctx,
     pizza,
-    ingredients = {},
+    ingredients = [],
     draggedIngredient = null,
-    showDraggedIngredient = false;
+    showDraggedIngredient = false,
+    level;
 
 /**
  * Starts the game.
@@ -24,15 +119,14 @@ function initGame() {
     ctx     = canvas.getContext("2d");
 
     // Add all the ingredients to be used to the ingredients' list
-    ingredients.base        = new Base(40, canvas.height-40, 40);
-    ingredients.tomatoSauce = new TomatoSauce(120, canvas.height-40, 40);
-    ingredients.olive       = new Olive(200, canvas.height-40, 30);
+    ingredients.push(new Base(40, canvas.height-40, 40));
+    ingredients.push(new TomatoSauce(120, canvas.height-40, 40));
+    ingredients.push(new Olive(200, canvas.height-40, 30));
 
     // Initializes the pizza
-    let r = 100;
-    let x = (canvas.width-(r/2))/2;
-    let y = (canvas.height-(r/2))/2;
-    pizza = new Pizza(x, y, r);
+    pizza = new Pizza(canvas.width/2, canvas.height/2, 250);
+    level = new Level(ingredients, pizza);
+    level.renderOrder();
 
     // Initializes the drag and drop events
     initDragAndDrop();
@@ -47,8 +141,8 @@ function renderGame() {
     pizza.render(ctx);
 
     // Draw each ingredient of the list
-    for (let key in ingredients)
-        ingredients[key].render(ctx);
+    for(let i = 0; i < ingredients.length; i++)
+        ingredients[i].render(ctx);
 
     // Render the ingredient when is being dragged
     if(showDraggedIngredient)
@@ -116,9 +210,8 @@ function initDragAndDrop() {
                 let y = pointer.y - pizza.y;
 
                 pizza.addIngredient(createIngredientByUid(action.origin, x, y));
+                level.checkOrder(action.origin);
             }
-
-            console.log(pizza.ingredients); //TODO: remove
 
             // Resets the action
             action = initAction();
