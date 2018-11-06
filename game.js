@@ -27,7 +27,7 @@ function initGame() {
     // Add all the ingredients to be used to the ingredients' list
     let size = 50;
     let margin = 20;
-    ingredients.push(new Base(size+margin, size+margin, size));
+    ingredients.push(new Dough(size+margin, size+margin, size));
     ingredients.push(new TomatoSauce(size+margin, size+margin*2+size*2, size));
     ingredients.push(new Olive(size+margin, size+margin*3+size*4, size-12));
     ingredients.push(new Pineapple(size+margin, size+margin*4+size*6, size));

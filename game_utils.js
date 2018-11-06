@@ -97,8 +97,8 @@ function getPointerCoordinates(event, canvas) {
 function createIngredientByUid(uid, x, y) {
 
     switch (uid) {
-        case BASE_UID:
-            return new Base(x, y, 220);
+        case DOUGH_UID:
+            return new Dough(x, y, 220);
         case TOMATO_SAUCE_UID:
             return new TomatoSauce(x, y, 200);
         case OLIVE_UID:

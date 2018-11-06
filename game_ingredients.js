@@ -1,7 +1,7 @@
 "use strict";
 
 const PIZZA_UID         = 0;
-const BASE_UID          = 1;
+const DOUGH_UID         = 1;
 const TOMATO_SAUCE_UID  = 2;
 const OLIVE_UID         = 3;
 const PINEAPPLE_UID     = 4;
@@ -63,12 +63,12 @@ class Pizza {
 /**
  * Base class.
  */
-class Base {
+class Dough {
 
     constructor(x, y, radius) {
 
-        this.uid = BASE_UID;
-        this.name = 'Pizza base';
+        this.uid = DOUGH_UID;
+        this.name = 'Pizza dough';
         this.color = 'fcf5bf';
         this.x = x;
         this.y = y;
