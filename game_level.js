@@ -26,6 +26,12 @@ class Level {
 
     nextLevel() {
 
+        if(this.level === 7) {
+            alert('Okay, it\'s enough.');
+            this.resetLevel();
+            return;
+        }
+
         this.level++;
         this.clearFeedback();
         this.clearOrder();
@@ -37,7 +43,7 @@ class Level {
     createOrder() {
 
         // Fills the order with random ingredients from the list
-        for(let i = 0; i < this.level + 1; i++)
+        for(let i = 0; i < this.level + 2; i++)
             this.order.push(this.ingredients[getRandomNumber(0, this.ingredients.length)]);
     }
 
