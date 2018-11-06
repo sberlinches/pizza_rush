@@ -23,7 +23,7 @@ class Pizza {
         this.strokeWidth = 6;
         this.globalAlpha = null;
         this.rotation = 0;
-        this.rotationSpeed = 0.005;
+        this.rotationSpeed = 0;
         this.ingredients = [];
     }
 
@@ -33,6 +33,7 @@ class Pizza {
 
     reset() {
         this.ingredients = [];
+        this.rotationSpeed = 0;
     }
 
     render(ctx) {

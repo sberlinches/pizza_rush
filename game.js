@@ -1,99 +1,5 @@
 "use strict";
 
-class Level {
-
-    constructor(ingredients, pizza) {
-        this.level = 1;
-        this.isOrderValid = true;
-        this.ingredients = ingredients;
-        this.pizza = pizza;
-        this.order = [];
-
-        this.createOrder();
-    }
-
-    /**
-     * Repeats the actual level
-     */
-    repeatLevel() {
-
-        this.isRecipeOk = true;
-        this.renderOrder();
-    }
-
-    /**
-     * Initializes the next level
-     */
-    nextLevel() {
-
-        this.level++;
-        this.isRecipeOk = true;
-        this.createOrder();
-        this.renderOrder();
-    }
-
-    /**
-     * Creates a order based on the ingredient list
-     */
-    createOrder() {
-
-        this.order = [];
-
-        // Fills the order with random ingredients from the list
-        for(let i = 0; i < this.level + 1; i++)
-            this.order.push(this.ingredients[getRandomNumber(0, this.ingredients.length)]);
-    }
-
-    /**
-     *
-     * @param ingredientUid
-     */
-    checkOrder(ingredientUid) {
-
-        if(this.order[0].uid === ingredientUid)
-            this.order.shift();
-        else
-            this.isOrderValid = false;
-
-        if(this.order.length === 0) {
-            if(this.isOrderValid) {
-                console.log('You made it!');
-                this.pizza.reset();
-                level.nextLevel();
-            }
-            else {
-                console.log('The recipe has been messed up! Try it again');
-                this.pizza.reset();
-                this.repeatLevel();
-            }
-        }
-    }
-
-    /**
-     * Renders the order on screen
-     */
-    renderOrder() {
-
-        let order = document.getElementById('order');
-        order.innerHTML = '';
-        let title = document.createElement('h2');
-        let list = document.createElement('ol');
-
-        for (let i = 0; i < this.order.length; i++) {
-
-            let li = document.createElement('li');
-            let text = document.createTextNode(this.order[i].name);
-
-            li.appendChild(text);
-            list.appendChild(li);
-        }
-
-        title.appendChild(document.createTextNode('Level ' + this.level));
-        order.appendChild(title);
-        order.append(list);
-    }
-}
-
 let canvas,
     ctx,
     pizza,
@@ -126,7 +32,6 @@ function initGame() {
     // Initializes the pizza
     pizza = new Pizza(canvas.width/2, canvas.height/2, 250);
     level = new Level(ingredients, pizza);
-    level.renderOrder();
 
     // Initializes the drag and drop events
     initDragAndDrop();
@@ -140,7 +45,7 @@ function renderGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     pizza.render(ctx);
 
-    // Draw each ingredient of the list
+    // Render each ingredient of the list
     for(let i = 0; i < ingredients.length; i++)
         ingredients[i].render(ctx);
 
