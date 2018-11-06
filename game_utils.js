@@ -78,9 +78,11 @@ function decToHex(d) {
  */
 function getPointerCoordinates(event, canvas) {
 
+    let rect = canvas.getBoundingClientRect();
+
     return {
-        x: event.clientX - canvas.offsetTop,
-        y: event.clientY - canvas.offsetLeft,
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
         radius: 0
     };
 }
