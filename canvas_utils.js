@@ -30,6 +30,30 @@ function rectangle(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth
 }
 
 /**
+ *
+ * @param ctx
+ * @param x start position (center)
+ * @param y start position (center)
+ * @param width
+ * @param height
+ * @param fillColor
+ * @param strokeColor
+ * @param strokeWidth
+ * @param globalAlpha
+ */
+function rhombus(ctx, x, y, width, height, fillColor, strokeColor, strokeWidth, globalAlpha = null) {
+
+    let coordinates = [
+        [width / 2, 0],
+        [width, height / 2],
+        [width / 2, height],
+        [0, height / 2]
+    ];
+
+    freeForm(ctx, x, y, coordinates, fillColor, strokeColor, strokeWidth, globalAlpha, true);
+}
+
+/**
  * @param ctx context
  * @param x start position (center)
  * @param y start position (center)
@@ -126,8 +150,6 @@ function text(ctx, x, y, text, font, size, fillColor) {
 function freeForm(ctx, x, y, cs, fillColor, strokeColor, strokeWidth, globalAlpha = null, autoClose = false) {
 
     ctx.save();
-
-    ctx.globalAlpha = 0.5;
 
     let max = getMaxWidthHeight(cs);
     ctx.translate((-max.width/2)+x, (-max.height/2)+y);

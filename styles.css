@@ -37,6 +37,10 @@ main {
     position: relative;
 }
 
+canvas {
+    display: block;
+}
+
 #order {
     background-color: lightgoldenrodyellow;
     border-radius: 5px;

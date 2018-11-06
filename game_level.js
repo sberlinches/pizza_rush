@@ -17,7 +17,7 @@ class Level {
 
         this.level = 1;
         this.clearFeedback();
-        this.renderFeedback('Hello!', 1000);
+        this.renderFeedback('3, 2, 1,.. Go!', 2000);
         this.clearOrder();
         this.createOrder();
         this.renderOrder();

@@ -98,11 +98,17 @@ function createIngredientByUid(uid, x, y) {
 
     switch (uid) {
         case BASE_UID:
-            return new Base(x, y, 90);
+            return new Base(x, y, 220);
         case TOMATO_SAUCE_UID:
-            return new TomatoSauce(x, y, 80);
+            return new TomatoSauce(x, y, 200);
         case OLIVE_UID:
             return new Olive(x, y, 10);
+        case PINEAPPLE_UID:
+            return new Pineapple(x, y, 40);
+        case HAM_UID:
+            return new Ham(x, y, 30);
+        case CHEESE_UID:
+            return new Cheese(x, y, 50);
     }
 }
 

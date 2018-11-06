@@ -25,9 +25,14 @@ function initGame() {
     ctx     = canvas.getContext("2d");
 
     // Add all the ingredients to be used to the ingredients' list
-    ingredients.push(new Base(40, canvas.height-40, 40));
-    ingredients.push(new TomatoSauce(120, canvas.height-40, 40));
-    ingredients.push(new Olive(200, canvas.height-40, 30));
+    let size = 50;
+    let margin = 20;
+    ingredients.push(new Base(size+margin, size+margin, size));
+    ingredients.push(new TomatoSauce(size+margin, size+margin*2+size*2, size));
+    ingredients.push(new Olive(size+margin, size+margin*3+size*4, size-12));
+    ingredients.push(new Pineapple(size+margin, size+margin*4+size*6, size));
+    ingredients.push(new Ham(size+margin, size+margin*5+size*8, size));
+    ingredients.push(new Cheese(size+margin, size+margin*6+size*10, size));
 
     // Initializes the pizza
     pizza = new Pizza(canvas.width/2, canvas.height/2, 250);
