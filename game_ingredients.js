@@ -75,7 +75,7 @@ class Dough {
         this.radius = radius;
         this.type = FULL_CIRCLE;
         this.fillColor = '#' + this.color;
-        this.strokeColor = '#e2dcaa';
+        this.strokeColor = null;
         this.strokeWidth = (this.radius*5)/100;
         this.globalAlpha = null;
     }
@@ -94,13 +94,13 @@ class TomatoSauce {
 
         this.uid = TOMATO_SAUCE_UID;
         this.name = 'Tomato sauce';
-        this.color = 'ff2b2b';
+        this.color = 'b21515';
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.type = FULL_CIRCLE;
         this.fillColor = '#' + this.color;
-        this.strokeColor = '#c12222';
+        this.strokeColor = null;
         this.strokeWidth = (this.radius*5)/100;
         this.globalAlpha = null;
     }
@@ -150,7 +150,7 @@ class Pineapple {
         this.width = size;
         this.height = size*2;
         this.fillColor = '#' + this.color;
-        this.strokeColor = '#c6b111';
+        this.strokeColor = null;
         this.strokeWidth = (size*5)/100;
         this.globalAlpha = null;
     }
@@ -175,7 +175,7 @@ class Ham {
         this.width = size*2;
         this.height = size*2;
         this.fillColor = '#' + this.color;
-        this.strokeColor = '#ad728e';
+        this.strokeColor = null;
         this.strokeWidth = (size*5)/100;
         this.globalAlpha = null;
     }
@@ -200,7 +200,7 @@ class Cheese {
         this.width = size*2;
         this.height = size*2;
         this.fillColor = '#' + this.color;
-        this.strokeColor = '#e0e59c';
+        this.strokeColor = null;
         this.strokeWidth = (size*5)/100;
         this.globalAlpha = null;
     }
